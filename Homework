@@ -1,0 +1,116 @@
+Завдання 1
+#include <iostream>
+#include <stdexcept>
+
+template <typename T>
+class Stack {
+private:
+    
+    struct Node {
+        T data;
+        Node* next;
+        Node(const T& value, Node* nextNode = nullptr)
+            : data(value), next(nextNode) {}
+    };
+
+    Node* topNode; 
+    size_t stackSize; 
+public:
+    
+    Stack() : topNode(nullptr), stackSize(0) {}
+
+    
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+Завдання 2
+#include <iostream>
+#include <stdexcept>
+
+    template <typename T>
+    class Queue {
+    private:
+        
+        struct Node {
+            T data;
+            Node* next;
+            Node(const T& value, Node* nextNode = nullptr)
+                : data(value), next(nextNode) {}
+        };
+
+        Node* frontNode; 
+        Node* rearNode;  
+        size_t queueSize; 
+    public:
+       
+        Queue() : frontNode(nullptr), rearNode(nullptr), queueSize(0) {}
+
+        
+        ~Queue() {
+            while (!isEmpty()) {
+                dequeue();
+            }
+        }
+
+        
+        void enqueue(const T& value) {
+            Node* newNode = new Node(value);
+            if (isEmpty()) {
+                frontNode = rearNode = newNode;
+            }
+            else {
+                rearNode->next = newNode;
+                rearNode = newNode;
+            }
+            ++queueSize;
+        }
+
+        
+        void dequeue() {
+            if (isEmpty()) {
+                throw std::underflow_error("Queue is empty. Cannot dequeue.");
+            }
+            Node* temp = frontNode;
+            frontNode = frontNode->next;
+            delete temp;
+            --queueSize;
+
+            
+            if (frontNode == nullptr) {
+                rearNode = nullptr;
+            }
+        }
+
+        
+        T front() const {
+            if (isEmpty()) {
+                throw std::underflow_error("Queue is empty. Cannot access front element.");
+            }
+            return frontNode->data;
+        }
+
+        
+        bool isEmpty() const {
+            return frontNode == nullptr;
+        }
+
+        
+            return queueSize;
+        }
+    };
+
+    int main() {
+        
+        Queue<int> queue;
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+
+        std::cout << "Front element: " << queue.front() << std::endl; /
+        queue.dequeue();
+        std::cout << "Front element after dequeue: " << queue.front() << std::endl; 
+
+        return 0;
+    }
